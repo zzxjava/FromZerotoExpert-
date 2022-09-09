@@ -12,24 +12,31 @@
 
 
 
-    <!--组件扫描-->
-    <!--
-    context:component-scan 标签作用
-    在Spring IOC初始化过程中,自动创建并管理com.imooc.springmvc及子包中
-    拥有以下注解的对象.
-    @Repository,,通常写在dao包的类上面
-    @Service，，业务逻辑类
-    @Controller，，控制器类
-    @Component。。组件（上面注解都是该注解的子类）
-    -->
-    <context:component-scan base-package="com.fromzerotoexpert.controller"></context:component-scan>
-
-    <!--启用mvc的注解开发模式-->
+    <!--配置spring mvc-->
+    <!--1,开启springmvc注解模式
+    a.自动注册DefaultAnnotationHandlerMapping,AnnotationMethodHandlerAdapter
+    b.默认提供一系列的功能:数据绑定，数字和日期的format@NumberFormat,@DateTimeFormat
+    c:xml,json的默认读写支持-->
     <mvc:annotation-driven/>
 
-    <!-- 将图片/JS/CSS等静态资源排除在外,可提高执行效率 -->
-    <mvc:default-servlet-handler></mvc:default-servlet-handler>
+    <!--2.静态资源默认servlet配置-->
+    <!--
+        1).加入对静态资源处理：js,gif,png
+        2).允许使用 "/" 做整体映射
+    -->
+    <mvc:default-servlet-handler/>
 
+    <!--3：配置JSP 显示ViewResolver-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--4:扫描web相关的controller-->
+    <context:component-scan base-package="com.fromzerotoexpert.controller"/>
+
+    <!--解决浏览器中文乱码问题-->
     <mvc:annotation-driven >
         <!-- 消息转换器 -->
         <mvc:message-converters register-defaults="true">
